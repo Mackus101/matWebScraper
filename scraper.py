@@ -1,9 +1,14 @@
+from pickle import FALSE
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-browser = webdriver.Chrome('driver\chromedriver.exe')
+options = Options()
+options.headless = FALSE
+
+browser = webdriver.Chrome('driver\chromedriver.exe', options=options)
 
 browser.get('https://www.matweb.com/search/PropertySearch.aspx')
 
@@ -28,7 +33,7 @@ results = browser.find_element(By.ID, 'tblResults')
 
 links = []
 
-while (current_page <= (page_total - 1)):
+while (current_page <= 19):
     browser.implicitly_wait(0.5)
     dropdown = Select(browser.find_element(By.NAME, 'ctl00$ContentMain$UcSearchResults1$drpPageSelect2'))
     results = browser.find_element(By.ID, 'tblResults')
