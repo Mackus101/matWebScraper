@@ -13,12 +13,8 @@ if (__name__ == '__main__'):
 
     browser = webdriver.Chrome('driver\chromedriver.exe', options=options)
 
-    browser.get('https://www.matweb.com/search/PropertySearch.aspx')
-
-    browser.implicitly_wait(0.5)
-    
+    ls.start(browser)
     ls.pick_material(browser)
     scan_result = ls.scrape_properties(browser, properties)
-    
 
     browser.close()

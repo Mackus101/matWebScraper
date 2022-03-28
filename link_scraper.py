@@ -2,6 +2,7 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
+
 def pick_material(page):
     # Pick Nickel
     metals = page.find_element(By.ID, 'ctl00_ContentMain_ucMatGroupTree_LODCS1_msTreeViewn3')
@@ -13,6 +14,17 @@ def pick_material(page):
     nickel = page.find_element(By.ID, 'ctl00_ContentMain_ucMatGroupTree_LODCS1_msTreeViewt23')
     nickel.click()
     return None
+
+def start(page):
+    page.get('https://www.matweb.com/search/PropertySearch.aspx')
+    pick_material(page)
+    find = page.find_element(By.NAME, 'ctl00$ContentMain$btnSubmit')
+    find.click()
+    
+    results = page.find_element(By.ID, 'tblResults')
+    link = results.find_element(By.XPATH, '//a[contains(@href, "MatGUID")]')
+    link.click()
+    page.get('https://www.matweb.com/search/PropertySearch.aspx')
 
 def scan(page):
     # Scan all the pages
