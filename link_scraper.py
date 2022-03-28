@@ -1,6 +1,3 @@
-import re
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -9,7 +6,7 @@ def pick_material(page):
     # Pick Nickel
     metals = page.find_element(By.ID, 'ctl00_ContentMain_ucMatGroupTree_LODCS1_msTreeViewn3')
     metals.click()
-    page.implicitly_wait(0.5)
+    page.implicitly_wait(1)
     non_ferrous = page.find_element(By.ID, 'ctl00_ContentMain_ucMatGroupTree_LODCS1_msTreeViewn13')
     non_ferrous.click()
     page.implicitly_wait(0.5)
@@ -53,27 +50,3 @@ def scrape_properties(page, properties):
         page.implicitly_wait(0.5)
         
     return links
-
-
-if (__name__ == '__main__'):
-    properties = ['ELONGATION [PROPERTY GROUP]',
-                'Tensile Strength, Ultimate (66430 matls)',
-                'Tensile Strength, Yield (46238 matls)']
-
-    options = Options()
-    options.headless = False
-
-    browser = webdriver.Chrome('driver\chromedriver.exe', options=options)
-
-    browser.get('https://www.matweb.com/search/PropertySearch.aspx')
-
-    browser.implicitly_wait(0.5)
-    
-    pick_material(browser)
-    scan_result = scrape_properties(browser, properties)
-    
-    for link in scan_result:
-        print(link)
-
-    print(len(scan_result))
-    browser.close()
