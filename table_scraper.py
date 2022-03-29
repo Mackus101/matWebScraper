@@ -22,8 +22,13 @@ if __name__ == '__main__':
     link = results.find_element(By.XPATH, '//a[contains(@href, "MatGUID")]')
     link.click()
 
+    properties = ['Tensile Strength, Ultimate', 'Tensile Strength, Yield', 'Elongation at Break']
+
     browser.get('https://www.matweb.com/search/DataSheet.aspx?MatGUID=014093642976472984e91c7392e67b55&ckck=1')
-    df = pd.read_html(browser.page_source, attrs={"class":"tabledataformat"})[0]
+    df = pd.read_html(browser.page_source, index_col=0, attrs={"class":"tabledataformat"})[0]
+    df.index.name = 'test'
+    df = df[df.index.notnull() ].reindex(properties)[1]
+    newdf = pd.concat([df], axis=1)
     print(df.head())
     
     browser.close()
