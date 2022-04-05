@@ -3,6 +3,7 @@ import pandas as pd
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 import link_scraper as ls
+import re
 
 if __name__ == '__main__':
 
@@ -25,11 +26,19 @@ if __name__ == '__main__':
     properties = ['Tensile Strength, Ultimate', 'Tensile Strength, Yield', 'Elongation at Break']
 
     browser.get('https://www.matweb.com/search/DataSheet.aspx?MatGUID=014093642976472984e91c7392e67b55&ckck=1')
-    df = pd.read_html(browser.page_source, index_col=0, attrs={"class":"tabledataformat"})[0]
-    df.index.name = 'test'
-    df = df[df.index.notnull() ].reindex(properties)[1]
-    newdf = pd.concat([df], axis=1)
-    print(df.head())
+    table = pd.read_html(browser.page_source, index_col=0, attrs={"class":"tabledataformat"})[0]
+    
+    table.index.name = None
+    
+    prop_entry = table[table.index.notnull()].reindex(properties)[1]
+    
+    
+    comp_entry = table['Component Elements Properties':].filter(regex='^[\w]+[,][\s][A-Z][a-z]$', axis='index')[1]
+    
+    new_entry = pd.concat([pd.DataFrame(prop_entry).T, pd.DataFrame(comp_entry).T], axis=1)
+    new_entry.insert(0, 'URL', browser.current_url)
+    new_entry.insert(0, 'Name', browser.title)
+    print(prop_entry.head())
     
     browser.close()
     
