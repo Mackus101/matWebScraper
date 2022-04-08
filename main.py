@@ -23,5 +23,6 @@ if (__name__ == '__main__'):
     
     grab_links = np.loadtxt('links/partition_1.dat', dtype=str, delimiter=" ")
 
-    # data = ts.grab_all_data(grab_links, browser)
-    # browser.close()
+    data = ts.grab_all_data(grab_links, browser)
+    print(data)
+    browser.close()
