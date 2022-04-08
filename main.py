@@ -2,6 +2,7 @@ import link_scraper as ls
 import table_scraper as ts
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.utils import ChromeType
 from selenium.webdriver.chrome.options import Options
 import numpy as np
 
