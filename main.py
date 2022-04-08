@@ -18,11 +18,13 @@ if (__name__ == '__main__'):
     # browser = webdriver.Chrome('driver\chromedriver.exe', options=options)
 
     ls.start(browser)
-    ls.pick_material(browser)
+    # ls.pick_material(browser)
     # scan_links = np.array(list(ls.scrape_properties(browser, properties)))
     
-    grab_links = np.loadtxt('links/partition_1.dat', dtype=str, delimiter=" ")
+    file = input("What file do you want?")
+    
+    grab_links = np.loadtxt('links/partition_' + str(file) + '.dat', dtype=str, delimiter=" ")
 
     data = ts.grab_all_data(grab_links, browser)
-    data.to_csv('nickel_data.csv')
+    data.to_csv('data/nickel_data_' + str(file) + '.csv')
     browser.close()
