@@ -1,7 +1,7 @@
 import re
 
-test_string = ['Unobtanium, Xo', 'Crumpets', 'Unobtanium, Xomp', 'Crumpets, Po','Unobtanium, X']
+test_string = ['Unobtanium, Xo', 'Crumpets', 'Unobtanium, Xomp', 'Crumpets, Po','Unobtanium, X', 'Unobtanium, X (Poggers)']
 
-p = re.compile('^[\w]+[,][\s][A-Z][a-z]{0,1}$')
+p = re.compile('^[\w]+[,][\s][\w]*')
 
 print(p)

@@ -2,6 +2,7 @@ import link_scraper as ls
 import table_scraper as ts
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+import numpy as np
 
 if (__name__ == '__main__'):
     properties = ['ELONGATION [PROPERTY GROUP]',
@@ -17,8 +18,9 @@ if (__name__ == '__main__'):
 
     ls.start(browser)
     ls.pick_material(browser)
-    scan_result = ls.scrape_properties(browser, properties)
+    scan_links = np.array(list(ls.scrape_properties(browser, properties)))
+    
 
-    data = ts.grab_all_data(scan_result, browser)
+    # data = ts.grab_all_data(scan_links, browser)
 
     browser.close()

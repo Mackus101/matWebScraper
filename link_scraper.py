@@ -2,6 +2,7 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
+import numpy as np
 
 
 def pick_material(page):
@@ -59,3 +60,11 @@ def scrape_properties(page, properties):
         links.update(scan(page))
         
     return links
+
+def save_links(links_list):
+    pnum = 0
+    split_list = np.array_split(links_list, 10)
+    for partition in split_list:
+        np.savetxt('links/partition_' + str(pnum) + '.dat', partition, delimiter=" ", fmt="%s")
+        pnum += 1
+    return None

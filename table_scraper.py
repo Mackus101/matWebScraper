@@ -3,14 +3,24 @@ import pandas as pd
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 import link_scraper as ls
+import time
+import random
 
 properties = ['Tensile Strength, Ultimate', 'Tensile Strength, Yield', 'Elongation at Break']
-element_regex = '^[\w]+[,][\s][A-Z][a-z]{0,1}$'
+element_regex ='^[\w]+[,][\s][\w]*' # '^[\w]+[,][\s][A-Z][a-z]{0,1}$' (old regex)
 
 def grab_all_data(links, browser):
     data = pd.DataFrame()
+    hits = 0
     for link in links:
-        pd.concat([data, grab_data(link, browser)])
+        try:
+            pd.concat([data, grab_data(link, browser)])
+            time.sleep(random.randint(1,60))
+            hits += 1
+        except:
+            print("Function got to " + str(hits) + " materials before failure")
+            return data
+    print("Function got to " + str(hits) + " materials, success!")
     return data
 
 def grab_data(link, browser):
