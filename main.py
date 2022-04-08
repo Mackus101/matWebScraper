@@ -17,8 +17,8 @@ if (__name__ == '__main__'):
     browser = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
     # browser = webdriver.Chrome('driver\chromedriver.exe', options=options)
 
-    # ls.start(browser)
-    # ls.pick_material(browser)
+    ls.start(browser)
+    ls.pick_material(browser)
     # scan_links = np.array(list(ls.scrape_properties(browser, properties)))
     
     grab_links = np.loadtxt('links/partition_1.dat', dtype=str, delimiter=" ")
