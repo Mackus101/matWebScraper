@@ -17,6 +17,7 @@ def grab_all_data(links, browser):
     for link in links:
         try:
             pd.concat([data, grab_data(link, browser)])
+            print(data)
             time.sleep(random.randint(1,60))
             print('Number of materials: ' + str(hits))
             hits += 1
