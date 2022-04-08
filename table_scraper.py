@@ -16,8 +16,10 @@ def grab_all_data(links, browser):
         try:
             pd.concat([data, grab_data(link, browser)])
             time.sleep(random.randint(1,60))
+            print('Number of materials: ' + str(hits))
             hits += 1
-        except:
+        except Exception as e:
+            print(e)
             print("Function got to " + str(hits) + " materials before failure")
             return data
     print("Function got to " + str(hits) + " materials, success!")
