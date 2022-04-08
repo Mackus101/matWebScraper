@@ -23,8 +23,11 @@ if (__name__ == '__main__'):
     
     file = input("What file do you want?")
     
-    grab_links = np.loadtxt('links/partition_' + str(file) + '.dat', dtype=str, delimiter=" ")
+    # grab_links = np.loadtxt('links/partition_' + str(file) + '.dat', dtype=str, delimiter=" ")
 
+    grab_links = ['https://www.matweb.com/search/DataSheet.aspx?MatGUID=0745fab0a2714ca2b2fe94370053b3ff', 'https://www.matweb.com/search/DataSheet.aspx?MatGUID=e5868e2f0dc0449ea6b7e5799828db30']
+    
     data = ts.grab_all_data(grab_links, browser)
+    print(data)
     data.to_csv('data/nickel_data_' + str(file) + '.csv')
     browser.close()
