@@ -30,7 +30,7 @@ if (__name__ == '__main__'):
     stop = int(input("Where do you want to end?"))
 
     options = Options()
-    options.headless = False
+    options.headless = True
     options.add_argument('no-sandbox')
     browser = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install(), options=options)
     # browser = webdriver.Chrome('driver\chromedriver.exe', options=options)
