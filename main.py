@@ -40,7 +40,7 @@ if (__name__ == '__main__'):
     if (regenerate):
         scan_links = np.array(list(ls.scrape_properties(browser, scan_properties)))
         ls.save_links(scan_links)
-        print("--- %s Seconds ---" % (time.strftime("%Hh%Mm%Ss", time.gmtime(time.time() - regen_start))))
+        print("--- %s ---" % (time.strftime("%Hh%Mm%Ss", time.gmtime(time.time() - regen_start))))
     while (start<=i<=stop):
         grab_start = time.time()
         grab_links = np.loadtxt('links/partition_' + str(i) + '.dat', dtype=str, delimiter=" ")
@@ -48,7 +48,7 @@ if (__name__ == '__main__'):
         print('Starting partition: ' + str(0))
         data = ts.grab_all_DataFrames(grab_links, browser)
         pickle.dump(data, open('data/nickel_data_' + str(i) + '.p', 'wb'))
-        print("--- %s Seconds ---" % (time.strftime("%Hh%Mm%Ss", time.gmtime(time.time() - grab_start))))
+        print("--- %s ---" % (time.strftime("%Hh%Mm%Ss", time.gmtime(time.time() - grab_start))))
         i += 1
 
     test = pickle.load(open('data/nickel_data_0.p', 'rb'))
