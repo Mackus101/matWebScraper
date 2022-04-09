@@ -24,7 +24,7 @@ def grab_all_DataFrames(links, browser):
             entry.loc['URL'] = browser.current_url
             entry.loc["Name"] = browser.title
             data.append(entry)
-            time.sleep(random.randint(15,35))
+            time.sleep(random.randint(15,30))
             print('Number of materials: ' + str(hits))
             hits += 1
         except Exception as e:
