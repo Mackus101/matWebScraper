@@ -3,6 +3,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 import numpy as np
+import time
+import random
 
 
 def pick_material(page):
@@ -36,6 +38,7 @@ def scan(page):
     links = set()
     
     while (current_page <= (page_total - 1)):
+        print('Current page: ' + str(current_page))
         dropdown = Select(page.find_element(By.NAME, 'ctl00$ContentMain$UcSearchResults1$drpPageSelect2'))
         results = WebDriverWait(page, timeout=60).until(lambda d: d.find_element(By.ID, 'tblResults'))
         links_raw = results.find_elements(By.XPATH, '//a[contains(@href, "MatGUID")]')
@@ -43,7 +46,7 @@ def scan(page):
             links.add(link.get_attribute('href'))
         dropdown.select_by_index(current_page)
         current_page += 1
-        
+        time.sleep(random.randint(1,10))
     return links
 
 def scrape_properties(page, properties):
@@ -51,6 +54,7 @@ def scrape_properties(page, properties):
     links = set()
     
     for property in properties:
+        print('Scanning for ' + property)
         dropdown = Select(page.find_element(By.NAME, 'ctl00$ContentMain$ucPropertyDropdown1$drpPropertyList'))
         dropdown.select_by_visible_text(property)
         
@@ -58,7 +62,6 @@ def scrape_properties(page, properties):
         find.click()
         
         links.update(scan(page))
-        
     return links
 
 def save_links(links_list):

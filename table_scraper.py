@@ -8,7 +8,6 @@ import link_scraper as ls
 import time
 import random
 
-properties = ['Tensile Strength, Ultimate', 'Tensile Strength, Yield', 'Elongation at Break']
 element_regex ='^[\w]+[,][\s][\w]*' # '^[\w]+[,][\s][A-Z][a-z]{0,1}$' (old regex)
 
 def grab_all_data(links, browser):
@@ -16,10 +15,10 @@ def grab_all_data(links, browser):
     hits = 0
     for link in links:
         try:
-            entry = grab_data(link, browser)
+            entry = grab_table(link, browser)
             print(entry)
             data = pd.concat([data, entry])
-            time.sleep(random.randint(1,60))
+            time.sleep(random.randint(1,30))
             print('Number of materials: ' + str(hits))
             hits += 1
         except Exception as e:
@@ -29,7 +28,8 @@ def grab_all_data(links, browser):
     print("Function got to " + str(hits) + " materials, success!")
     return data
 
-def grab_data(link, browser):
+# Depreciated function to only grab properties from a list
+def grab_data(link, properties, browser):
     browser.get(link)
     table = pd.read_html(browser.page_source, index_col=0, attrs={"class":"tabledataformat"})[0]
     table.index.name = None
@@ -42,12 +42,22 @@ def grab_data(link, browser):
     new_entry.insert(0, 'URL', browser.current_url)
     new_entry.insert(0, 'Name', browser.title)
     return new_entry
+
+# This one just takes everything
+def grab_table(link, browser):
+    browser.get(link)
+    table = pd.read_html(browser.page_source, index_col=0, attrs={"class":"tabledataformat"})[0]
+    table.index.name = None
+    formatted_table = pd.DataFrame(table[table.index.notnull()][1]).T
+    formatted_table.insert(0, 'URL', browser.current_url)
+    formatted_table.insert(0, 'Name', browser.title)
+    return formatted_table
         
 
 if __name__ == '__main__':
 
     options = Options()
-    options.headless = True
+    options.headless = False
     options.add_argument('no-sandbox')
     browser = webdriver.Chrome(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install(), options=options)
 
@@ -77,9 +87,9 @@ if __name__ == '__main__':
     # new_entry.insert(0, 'URL', browser.current_url)
     # new_entry.insert(0, 'Name', browser.title)
     
-    entry = grab_data('https://www.matweb.com/search/DataSheet.aspx?MatGUID=014093642976472984e91c7392e67b55&ckck=1', browser)
+    # test = grab_all_data('https://www.matweb.com/search/DataSheet.aspx?MatGUID=014093642976472984e91c7392e67b55&ckck=1', browser)
     
-    print(entry.head())
+    # print(entry.head())
     
     browser.close()
     
