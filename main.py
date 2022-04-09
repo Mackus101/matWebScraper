@@ -25,8 +25,7 @@ if (__name__ == '__main__'):
     
     regenerate = input("Do you want to regenerate the links? y/n") == 'y'
     
-    i = 0
-    start = int(input("What file do you want to start from?"))
+    start = i = int(input("What file do you want to start from?"))
     stop = int(input("Where do you want to end?"))
 
     options = Options()
