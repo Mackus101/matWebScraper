@@ -1,15 +1,41 @@
+from matplotlib.pyplot import table
 from selenium import webdriver
 import pandas as pd
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.utils import ChromeType
+from selenium.webdriver.support.ui import WebDriverWait
 import link_scraper as ls
 import time
 import random
 
 element_regex ='^[\w]+[,][\s][\w]*' # '^[\w]+[,][\s][A-Z][a-z]{0,1}$' (old regex)
 
+def grab_all_DataFrames(links, browser):
+    data = []
+    hits = 0
+    for link in links:
+        try:
+            browser.get(link)
+            main_table = pd.read_html(browser.page_source, index_col=0, attrs={'class':"tabledataformat"})[0]
+            head_table = pd.read_html(browser.page_source, index_col=0, attrs={'class':"tabledataformat t_ableborder tableloose altrow"})[0]
+            entry = pd.concat([main_table, head_table.squeeze()])
+            entry.loc['URL'] = browser.current_url
+            entry.loc["Name"] = browser.title
+            data.append(entry)
+            time.sleep(random.randint(15,35))
+            print('Number of materials: ' + str(hits))
+            hits += 1
+        except Exception as e:
+            print(e)
+            print("Function got to " + str(hits) + " materials before failure")
+            return data
+    print("Function got to " + str(hits) + " materials, success!")
+    return data
+    
+
+# Depreciated, now we save the dataframes directly
 def grab_all_data(links, browser):
     data = pd.DataFrame()
     hits = 0
@@ -18,7 +44,7 @@ def grab_all_data(links, browser):
             entry = grab_table(link, browser)
             print(entry)
             data = pd.concat([data, entry])
-            time.sleep(random.randint(1,30))
+            time.sleep(random.randint(1,60))
             print('Number of materials: ' + str(hits))
             hits += 1
         except Exception as e:
@@ -73,7 +99,7 @@ if __name__ == '__main__':
     link = results.find_element(By.XPATH, '//a[contains(@href, "MatGUID")]')
     link.click()
 
-    # browser.get('https://www.matweb.com/search/DataSheet.aspx?MatGUID=014093642976472984e91c7392e67b55&ckck=1')
+    browser.get('https://www.matweb.com/search/DataSheet.aspx?MatGUID=014093642976472984e91c7392e67b55&ckck=1')
     # table = pd.read_html(browser.page_source, index_col=0, attrs={"class":"tabledataformat"})[0]
     
     # table.index.name = None
@@ -91,7 +117,7 @@ if __name__ == '__main__':
     
     # print(entry.head())
     
+    # print(data)
+    
     browser.close()
-    
-    
     

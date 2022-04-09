@@ -66,7 +66,7 @@ def scrape_properties(page, properties):
 
 def save_links(links_list):
     pnum = 0
-    split_list = np.array_split(links_list, 10)
+    split_list = np.array_split(links_list, 15)
     for partition in split_list:
         np.savetxt('links/partition_' + str(pnum) + '.dat', partition, delimiter=" ", fmt="%s")
         pnum += 1
