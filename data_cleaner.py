@@ -4,7 +4,8 @@ import os
 import cleaning_tools as ct
 
 element_regex ='^[\w]+[,][\s][A-Z][a-z]?([\s][(].+[)])?$'
-properties = ['Name', 'URL', 'Density', 'Tensile Strength, Ultimate', 'Tensile Strength, Yield', 'Elongation at Break']
+identity = ['Name', 'URL']
+properties = ['Density', 'Tensile Strength, Ultimate', 'Tensile Strength, Yield', 'Elongation at Break']
 
 if __name__ == '__main__':
     files = os.listdir('data')
@@ -23,6 +24,7 @@ if __name__ == '__main__':
     stage_2 = stage_1.loc[stage_1["Component Elements Properties"] == "Metric"]
     # Pick out the columns that we care about
     components = list(stage_2.filter(regex=element_regex, axis='columns').columns)
-    stage_3 = stage_2[properties + components].reset_index()
+    stage_3 = stage_2[identity + properties + components].reset_index()
     stage_3[components] = stage_3[components].applymap(ct.clean_components)
+    stage_3[properties] = stage_3[properties].applymap(ct.clean_properties)
     print(len(data))

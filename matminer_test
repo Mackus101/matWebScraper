@@ -1,0 +1,14 @@
+import pandas as pd
+from matminer.data_retrieval.retrieve_Citrine import CitrineDataRetrieval
+from matminer.featurizers.composition import alloy
+
+# cdr = CitrineDataRetrieval(api_key="8krqnLRLrTzvlPXSH8w9QQtt")
+
+# df = cdr.get_dataframe(criteria={"data_set_id":153493}, 
+#                        properties=["Yield Strength", "Ultimate Tensile Strength"],
+#                        secondary_fields=True)
+
+if __name__ == "__main__":
+    test = pd.read_json('ni_superalloys_3.json')
+
+    print(test.head())
