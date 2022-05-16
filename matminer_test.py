@@ -10,6 +10,10 @@ import json
 #                        secondary_fields=True)
 
 search_terms = ['Yield Strength', 'Ultimate Tensile Strength', 'Elongation']
+compat_rename = {'Ultimate Tensile Strength':'Tensile Strength, Ultimate',
+                 'Yield Strength':'Tensile Strength, Yield',
+                 'Elongation':'Elongation at Break',
+                 'names':'Name'}
 
 def format_entry(entry):
     elements = pd.json_normalize(entry['composition']).set_index('element').T
@@ -28,13 +32,18 @@ def format_superalloys(data):
         format_entry(entry)
         formatted_data = pd.concat([formatted_data, format_entry(entry)], ignore_index=True)
         
+    formatted_data = formatted_data.rename(columns=compat_rename)
     return formatted_data
 
-
-if __name__ == "__main__":
+def load_matmine_data(filepath):
+    
     with open('ni_superalloys_3.json','r') as f:
         data = json.loads(f.read())
     
-    test = format_superalloys(data)
+    return format_superalloys(data)
+
+if __name__ == "__main__":
+    
+    test = load_matmine_data('ni_superalloys_3.json')
 
     print(test.head())
